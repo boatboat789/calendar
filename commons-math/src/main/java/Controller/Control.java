@@ -11,8 +11,12 @@ public class Control  {
 	public static ArrayList<String>day = new ArrayList<>();
 	public static ArrayList<String>month = new ArrayList<>();
 	public static ArrayList<String>year = new ArrayList<>();
+	public static linkR frame;
+	public static ArrayList<String>day1 = new ArrayList<>();
+	public static ArrayList<String>month1 = new ArrayList<>();
+	public static ArrayList<String>year1 = new ArrayList<>();
 	public void link (){
-		linkR frame = new linkR();
+		frame = new linkR();
 		frame.setTitle("TABLE1");
 		frame.pack();
 		frame.setVisible(true);
