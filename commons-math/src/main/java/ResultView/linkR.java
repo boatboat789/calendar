@@ -16,6 +16,9 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,9 +34,9 @@ public class linkR  extends JFrame  {
 	public  ArrayList<String> remover = new ArrayList<>();
 	public JTextField getS , getA, geta,getb,getc;
 	Control c = new Control();
-	public int row;
-	public int column;
-	DefaultTableModel model;
+	public static int column;
+	static DefaultTableModel model;
+	public static int[] days = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	
 	class ListenerMgr implements ActionListener {
 		@Override
@@ -64,6 +67,16 @@ public class linkR  extends JFrame  {
 		JTable table = new JTable();
 		scrollPane.setViewportView(table);
 		// Model for Table
+		// Menu Bar
+        JMenuBar menuBar=new JMenuBar();
+        
+        // Menu 1
+        JMenu menu1 = new JMenu("file");
+        JMenuItem menu1_1 = new JMenuItem("update delete");
+        JMenuItem menu1_2 = new JMenuItem("update insert");
+        menu1.add(menu1_1);
+        menu1.add(menu1_2);
+        menuBar.add(menu1);
 		 model = new DefaultTableModel(){
 			 public Class<?> getColumnClass(int column){
 				 switch (column) {
@@ -107,7 +120,13 @@ public class linkR  extends JFrame  {
 				else if(getc.getText().equals("")){
 					
 				}
-				else{
+				else if(geta.getText().split("/").length <2){
+					
+				}
+				else if(getb.getText().split(":").length <1){
+					
+				}
+				else {
 					Control.day.add(geta.getText());
 					Control.month.add(getb.getText());
 					Control.year.add(getc.getText());
@@ -140,8 +159,7 @@ public class linkR  extends JFrame  {
 				}
 				}
 			});	
-		JButton updateDelete = new JButton ("update delete");
-		updateDelete.addActionListener(new ActionListener() {
+		menu1_1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for(int i =0 ;i <remover.size();i++){
@@ -156,8 +174,7 @@ public class linkR  extends JFrame  {
 
 			}
 			});
-		JButton updateInsert = new JButton ("update Insert");
-		updateInsert.addActionListener(new ActionListener() {
+		menu1_2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for(int i =0 ;i <Control.day.size();i++){
@@ -173,7 +190,33 @@ public class linkR  extends JFrame  {
 				Control.year.clear();
 				}
 			});	
-
+		 // Menu 2
+        JMenu menu2 = new JMenu("add");
+        JMenuItem menu2_1 = new JMenuItem("Daily");
+        JMenuItem menu2_2 = new JMenuItem("Weekly");
+        JMenuItem menu2_3 = new JMenuItem("Montly");
+        menu2.add(menu2_1);
+        menu2.add(menu2_2);
+        menu2.add(menu2_3);
+        menuBar.add(menu2);
+    	menu2_1.addActionListener(new ActionListener() {
+			@Override
+				public void actionPerformed(ActionEvent e) {
+				c.detailD();
+				}
+			});
+		menu2_2.addActionListener(new ActionListener() {
+			@Override
+				public void actionPerformed(ActionEvent e) {
+					c.detailV();
+				}
+			});	
+		menu2_3.addActionListener(new ActionListener() {
+			@Override
+				public void actionPerformed(ActionEvent e) {
+					c.detail();
+				}
+			});	
 
 		text.add(show);
 		text.add(geta);
@@ -183,11 +226,10 @@ public class linkR  extends JFrame  {
 		text.add(getc);
 		text.add(get);
 		text.add(delete);
-		text.add(updateDelete);
-		text.add(updateInsert);
 		linkP.add(scrollPane);
 		center.add(linkP);
 		center.add(text);
+		 setJMenuBar(menuBar);
 		add(center, BorderLayout.CENTER);
 	}
 	public void delete(String Day) throws ClassNotFoundException, SQLException {
