@@ -1,37 +1,28 @@
 package ResultView;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.Control;
 
-public class linkR  extends JFrame  {
+public class LinkR  extends JFrame  {
 	public  ArrayList<String> remover = new ArrayList<>();
+	public  ArrayList<String> remover1 = new ArrayList<>();
 	public JTextField getS , getA, geta,getb,getc;
 	Control c = new Control();
 	public static int column;
@@ -47,8 +38,7 @@ public class linkR  extends JFrame  {
 			}
 			}
 		}
-	public linkR() {
-		JPanel getall = new JPanel();
+	public LinkR() {
 		JPanel text = new JPanel();
 		JPanel center = new JPanel();
 		JPanel linkP = new JPanel();
@@ -74,8 +64,10 @@ public class linkR  extends JFrame  {
         JMenu menu1 = new JMenu("file");
         JMenuItem menu1_1 = new JMenuItem("update delete");
         JMenuItem menu1_2 = new JMenuItem("update insert");
+        JMenuItem menu1_3 = new JMenuItem("WriteFile");
         menu1.add(menu1_1);
         menu1.add(menu1_2);
+        menu1.add(menu1_3);
         menuBar.add(menu1);
 		 model = new DefaultTableModel(){
 			 public Class<?> getColumnClass(int column){
@@ -154,9 +146,10 @@ public class linkR  extends JFrame  {
 						Control.day1.remove(i);
 						Control.month1.remove(i);
 						Control.year1.remove(i);
-						column--;
+						column--;	
+						}
 					}
-				}
+				
 				}
 			});	
 		menu1_1.addActionListener(new ActionListener() {
@@ -164,7 +157,8 @@ public class linkR  extends JFrame  {
 			public void actionPerformed(ActionEvent e) {
 				for(int i =0 ;i <remover.size();i++){
 					try {
-						Control.frame.delete(remover.get(i));
+						Control.d.delete(remover.get(i));
+					
 					} catch (ClassNotFoundException | SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -179,7 +173,10 @@ public class linkR  extends JFrame  {
 			public void actionPerformed(ActionEvent e) {
 				for(int i =0 ;i <Control.day.size();i++){
 					try {
-						Control.frame.insert(Control.day.get(i),Control.month.get(i),Control.year.get(i));
+						Control.d.insert(Control.day.get(i),Control.month.get(i),Control.year.get(i));
+						Control.day1.add(Control.day.get(i));
+						Control.month1.add(Control.month.get(i));
+						Control.year1.add(Control.year.get(i));
 					} catch (ClassNotFoundException | SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -190,14 +187,22 @@ public class linkR  extends JFrame  {
 				Control.year.clear();
 				}
 			});	
+		menu1_3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Control.writeFile.writeToFile();;
+				}
+			});	
 		 // Menu 2
         JMenu menu2 = new JMenu("add");
         JMenuItem menu2_1 = new JMenuItem("Daily");
         JMenuItem menu2_2 = new JMenuItem("Weekly");
         JMenuItem menu2_3 = new JMenuItem("Montly");
+        JMenuItem menu2_4 = new JMenuItem("Find");
         menu2.add(menu2_1);
         menu2.add(menu2_2);
         menu2.add(menu2_3);
+        menu2.add(menu2_4);
         menuBar.add(menu2);
     	menu2_1.addActionListener(new ActionListener() {
 			@Override
@@ -217,7 +222,12 @@ public class linkR  extends JFrame  {
 					c.detail();
 				}
 			});	
-
+		menu2_4.addActionListener(new ActionListener() {
+			@Override
+				public void actionPerformed(ActionEvent e) {
+					c.finder();
+				}
+			});
 		text.add(show);
 		text.add(geta);
 		text.add(show1);
@@ -229,35 +239,10 @@ public class linkR  extends JFrame  {
 		linkP.add(scrollPane);
 		center.add(linkP);
 		center.add(text);
-		 setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		add(center, BorderLayout.CENTER);
 	}
-	public void delete(String Day) throws ClassNotFoundException, SQLException {
-		Class.forName("org.sqlite.JDBC");
-		String sql = "DELETE  FROM book WHERE Day=?";
-		String dbURL = "jdbc:sqlite:bookstore.db";
-		Connection conn = DriverManager.getConnection(dbURL);
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		// set the corresponding param
-		pstmt.setString(1,Day);
-		// update 
-		pstmt.executeUpdate();
-		conn.close();
-	}
-	public void insert(String Day, String TIME , String DETAIL) throws ClassNotFoundException, SQLException {
-        
-        Class.forName("org.sqlite.JDBC");
-        String sql = "INSERT INTO book(Day,TIME,DETAIL) VALUES(?,?,?)";
-		String dbURL = "jdbc:sqlite:bookstore.db";
-		Connection conn = DriverManager.getConnection(dbURL);
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1,Day);
-        pstmt.setString(2,TIME);
-        pstmt.setString(3,DETAIL);
-        pstmt.executeUpdate();
-        conn.close();
-       
-    }
+
 
 
 

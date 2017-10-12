@@ -30,9 +30,9 @@ import javax.swing.table.DefaultTableModel;
 
 import Controller.Control;
 
-public class detailViewD  extends JFrame  {
+public class DetailView  extends JFrame  {
 	public JTextField getS , getA, geta,getb,getc;
-	
+
 	class ListenerMgr implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -42,7 +42,7 @@ public class detailViewD  extends JFrame  {
 			}
 			}
 		}
-	public detailViewD() {
+	public DetailView() {
 		JPanel getall = new JPanel();
 		JPanel text = new JPanel();
 		JPanel center = new JPanel();
@@ -78,25 +78,25 @@ public class detailViewD  extends JFrame  {
 					String[] x = geta.getText().split("/");
 					String x1 = getb.getText();
 					String x2 = getc.getText();
-					int w = Integer.parseInt(x[0]);
-					while ( w<=linkR.days[Integer.parseInt(x[1])]){
-						System.out.println();
-						linkR.model.addRow(new Object[0]);
-						linkR.model.setValueAt(false,  linkR.column, 0);
-						String d = w+"/"+x[1]+"/"+x[2];
-						linkR.model.setValueAt(d, linkR.column, 1);
-						linkR.model.setValueAt(x1, linkR.column, 2);
-						linkR.model.setValueAt(x2, linkR.column, 3);
-						Control.day.add(d);
-						Control.month.add(x1);
-						Control.year.add(x2);
-						linkR.column++;
-						w=w+1;
-						geta.setText("");
-						getb.setText("");
-						getc.setText("");
+					for(int i = Integer.parseInt(x[1]); i<=12 ; i++){
+						System.out.println(i+" "+x[0]+" "+LinkR.days[i]);
+						if(Integer.parseInt(x[0]) <=LinkR.days[i]){
+							System.out.println();
+							LinkR.model.addRow(new Object[0]);
+							LinkR.model.setValueAt(false, LinkR.column, 0);
+							String d = x[0]+"/"+i+"/"+x[2];
+							LinkR.model.setValueAt(d, LinkR.column, 1);
+							LinkR.model.setValueAt(x1, LinkR.column, 2);
+							LinkR.model.setValueAt(x2, LinkR.column, 3);
+							Control.day.add(d);
+							Control.month.add(x1);
+							Control.year.add(x2);
+							LinkR.column++;
+							geta.setText("");
+							getb.setText("");
+							getc.setText("");
 						}
-					
+					}
 				}
 			}
 		});	

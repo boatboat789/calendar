@@ -44,7 +44,11 @@ public class main {
 		conn.close();
 		Control c1 = new Control();
 		c1.link();
+		for(int i = 0 ;i <Control.day1.size();i++){
+			System.out.println(Control.day1.get(i));
 		}
+		}
+		
 	}
 
 }
