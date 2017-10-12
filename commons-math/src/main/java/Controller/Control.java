@@ -10,7 +10,7 @@ import ResultView.DetailViewV;
 import ResultView.Finder;
 import ResultView.LinkR;
 
-
+//thiti
 public class Control  {
 	public static ArrayList<String>day = new ArrayList<>();
 	public static ArrayList<String>month = new ArrayList<>();
